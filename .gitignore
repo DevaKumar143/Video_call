@@ -1,0 +1,10 @@
+# backend
+node_modules/
+.env
+
+# frontend
+my-app/node_modules/
+my-app/build/
+
+# logs
+npm-debug.log*
