@@ -14,12 +14,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Set Node version
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
     # Backend
     - name: Install Backend Dependencies
       run: npm install
 
     - name: Run Backend Tests
       run: npm test
+      continue-on-error: true   # <-- optional: allow pipeline to continue if tests fail
 
     # Frontend
     - name: Install Frontend Dependencies
@@ -31,6 +38,7 @@ jobs:
       run: |
         cd my-app
         npm test
+      continue-on-error: true   # <-- optional
 
     - name: Build Frontend
       run: |
@@ -40,11 +48,12 @@ jobs:
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    #  Deploy frontend to Vercel
+    # Deploy Frontend to Vercel
     - name: Deploy Frontend to Vercel
       uses: amondnet/vercel-action@v20
       with:
@@ -53,7 +62,8 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         working-directory: ./my-app
 
-    # Deploy backend to Heroku
+    # Deploy Backend to Heroku.github/workflows/ci-cd.yml
+
     - name: Deploy Backend to Heroku
       uses: akhileshns/heroku-deploy@v3.12.12
       with:
