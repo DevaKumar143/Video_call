@@ -6,5 +6,8 @@ node_modules/
 my-app/node_modules/
 my-app/build/
 
+node_modules/
+my-app/node_modules/
+
 # logs
 npm-debug.log*
